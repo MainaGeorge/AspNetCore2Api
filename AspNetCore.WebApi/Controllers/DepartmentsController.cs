@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AspNetCore2Api.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
@@ -54,6 +56,27 @@ namespace AspNetCoreApi.WebApi.Controllers
             _db.SaveChanges();
 
             return dept;
+        }
+
+
+        [HttpPut("{id}")]
+        public string PutDepartment([FromRoute] int id, [FromBody] Department dept)
+        {
+            if (id != dept.Id)
+                return "wrong request";
+
+            try
+            {
+                _db.Entry(dept).State = EntityState.Modified;
+                _db.SaveChanges();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return "department trouble";
+            }
+
+            return "Updated successfully";
         }
     }
 }
