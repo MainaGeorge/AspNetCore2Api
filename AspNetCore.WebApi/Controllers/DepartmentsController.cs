@@ -45,5 +45,15 @@ namespace AspNetCoreApi.WebApi.Controllers
                 return "Delete successful";
             }
         }
+
+        [HttpPost]
+        public Department AddDepartment([FromBody] Department dept)
+        {
+            _db.Departments.Add(dept);
+
+            _db.SaveChanges();
+
+            return dept;
+        }
     }
 }
