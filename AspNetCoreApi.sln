@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApi.DataAccessLayer", "DataAccessLayer\AspNetCore2Api.DataAccessLayer\AspNetCoreApi.DataAccessLayer.csproj", "{9FB2DE5E-67AA-43E6-BD6F-B327235B793A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApi.WebApi", "AspNetCore.WebApi\AspNetCoreApi.WebApi.csproj", "{1686726C-D9DC-496C-A2F9-5027419FE276}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FB2DE5E-67AA-43E6-BD6F-B327235B793A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB2DE5E-67AA-43E6-BD6F-B327235B793A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB2DE5E-67AA-43E6-BD6F-B327235B793A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB2DE5E-67AA-43E6-BD6F-B327235B793A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1686726C-D9DC-496C-A2F9-5027419FE276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1686726C-D9DC-496C-A2F9-5027419FE276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1686726C-D9DC-496C-A2F9-5027419FE276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1686726C-D9DC-496C-A2F9-5027419FE276}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFC90E5E-5E19-4C4F-91BF-10D0F85E4A90}
+	EndGlobalSection
+EndGlobal
