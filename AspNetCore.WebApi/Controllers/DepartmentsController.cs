@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AspNetCore2Api.DataAccessLayer;
+using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
@@ -19,64 +19,88 @@ namespace AspNetCoreApi.WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Department> GetDepartments()
+        public ActionResult<IEnumerable<Department>> GetDepartments()
         {
-            return _db.Departments.ToList();
+            var departments = _db.Departments.ToList();
+
+            if (departments.Any())
+            {
+                return Ok(departments);
+            }
+
+            return NotFound();
         }
 
         [HttpGet("{id:int}")]
-        public Department GetDepartment(int id)
+        public ActionResult<Department> GetDepartment(int id)
         {
-            return _db.Departments.FirstOrDefault(d => d.Id == id);
+            var department = _db.Departments.FirstOrDefault(d => d.Id == id);
+            if (department != null)
+            {
+                return Ok(department);
+            }
+
+            return NotFound();
         }
 
         [HttpDelete("{id:int}")]
-        public string DeleteDepartment(int id)
+        public IActionResult DeleteDepartment(int id)
         {
             var dept = _db.Departments.FirstOrDefault(d => d.Id == id);
 
             if (dept == null)
             {
-                return "No item with that id";
+                return NotFound();
             }
             else
             {
-                _db.Remove<Department>(dept);
+                _db.Remove(dept);
 
                 _db.SaveChanges();
-                return "Delete successful";
+                return NoContent();
             }
         }
 
         [HttpPost]
-        public Department AddDepartment([FromBody] Department dept)
+        public IActionResult AddDepartment([FromBody] Department dept)
         {
-            _db.Departments.Add(dept);
+            if (ModelState.IsValid)
+            {
+                _db.Departments.Add(dept);
 
-            _db.SaveChanges();
+                _db.SaveChanges();
 
-            return dept;
+                return CreatedAtAction("GetDepartment", new { id = dept.Id }, dept);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
 
         [HttpPut("{id}")]
-        public string PutDepartment([FromRoute] int id, [FromBody] Department dept)
+        public IActionResult PutDepartment([FromBody] Department department)
         {
-            if (id != dept.Id)
-                return "wrong request";
-
-            try
+            if (ModelState.IsValid)
             {
-                _db.Entry(dept).State = EntityState.Modified;
-                _db.SaveChanges();
+                var dept = _db.Departments.AsNoTracking().FirstOrDefault(p => p.Id == department.Id);
+                if (dept == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _db.Departments.Update(department);
 
+                    _db.SaveChanges();
+                    return NoContent();
+                }
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                return "department trouble";
+                return BadRequest(ModelState);
             }
-
-            return "Updated successfully";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreApi.DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore2Api.DataAccessLayer
 {

@@ -23,7 +23,6 @@ namespace AspNetCoreApi.WebApi
 
             services.AddControllers();
 
-            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,8 +34,6 @@ namespace AspNetCoreApi.WebApi
             }
 
             app.UseHttpsRedirection();
-
-            app.UseSwaggerUi3();
 
             app.UseRouting();
 
