@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AspNetCore2Api.DataAccessLayer;
 using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace AspNetCoreApi.WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Department>> GetDepartments()
+        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            var departments = _db.Departments.ToList();
+            var departments = await _db.Departments.ToListAsync();
 
             if (departments.Any())
             {
@@ -31,10 +32,22 @@ namespace AspNetCoreApi.WebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("{id:int}")]
-        public ActionResult<Department> GetDepartment(int id)
+        [HttpGet("[action]/{id:int}")]
+        public async Task<ActionResult<Department>> GetById(int id)
         {
-            var department = _db.Departments.FirstOrDefault(d => d.Id == id);
+            var department = await _db.Departments.FirstOrDefaultAsync(d => d.Id == id);
+            if (department != null)
+            {
+                return Ok(department);
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet("[action]/{name}")]
+        public async Task<ActionResult<Department>> GetByName(string name)
+        {
+            var department = await _db.Departments.FirstOrDefaultAsync(d => d.Name == name);
             if (department != null)
             {
                 return Ok(department);
@@ -44,9 +57,9 @@ namespace AspNetCoreApi.WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteDepartment(int id)
+        public async Task<IActionResult> DeleteDepartment(int id)
         {
-            var dept = _db.Departments.FirstOrDefault(d => d.Id == id);
+            var dept = await _db.Departments.FirstOrDefaultAsync(d => d.Id == id);
 
             if (dept == null)
             {
@@ -56,21 +69,21 @@ namespace AspNetCoreApi.WebApi.Controllers
             {
                 _db.Remove(dept);
 
-                _db.SaveChanges();
-                return NoContent();
+                await _db.SaveChangesAsync();
+                return Ok(dept);
             }
         }
 
         [HttpPost]
-        public IActionResult AddDepartment([FromBody] Department dept)
+        public async Task<IActionResult> PostDepartment([FromBody] Department dept)
         {
             if (ModelState.IsValid)
             {
-                _db.Departments.Add(dept);
+                await _db.Departments.AddAsync(dept);
 
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
 
-                return CreatedAtAction("GetDepartment", new { id = dept.Id }, dept);
+                return CreatedAtAction("GetById", new { id = dept.Id }, dept);
             }
             else
             {
@@ -80,11 +93,11 @@ namespace AspNetCoreApi.WebApi.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult PutDepartment([FromBody] Department department)
+        public async Task<IActionResult> PutDepartment([FromBody] Department department)
         {
             if (ModelState.IsValid)
             {
-                var dept = _db.Departments.AsNoTracking().FirstOrDefault(p => p.Id == department.Id);
+                var dept = await _db.Departments.AsNoTracking().FirstOrDefaultAsync(p => p.Id == department.Id);
                 if (dept == null)
                 {
                     return NotFound();
@@ -93,7 +106,7 @@ namespace AspNetCoreApi.WebApi.Controllers
                 {
                     _db.Departments.Update(department);
 
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                     return NoContent();
                 }
             }
