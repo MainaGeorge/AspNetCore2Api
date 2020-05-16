@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AspNetCore2Api.DataAccessLayer;
 using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreApi.WebApi.Controllers
@@ -22,7 +23,20 @@ namespace AspNetCoreApi.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            var departments = await _db.Departments.ToListAsync();
+            var departments = await _db.Departments.Include(d => d.Employees)
+                .Select(d => new Department
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    Description = d.Description,
+                    Employees = d.Employees.Select(e => new Employee
+                    {
+                        Name = e.Name,
+                        Gender = e.Gender,
+                        Id = e.Id,
+                    })
+                })
+                .ToListAsync();
 
             if (departments.Any())
             {
