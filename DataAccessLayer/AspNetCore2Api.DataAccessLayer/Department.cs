@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AspNetCoreApi.DataAccessLayer
@@ -10,6 +11,9 @@ namespace AspNetCoreApi.DataAccessLayer
 
         [Required]
         public string Name { get; set; }
+
         public string Description { get; set; }
+
+        public IEnumerable<Employee> Employees { get; set; }   
     }
 }

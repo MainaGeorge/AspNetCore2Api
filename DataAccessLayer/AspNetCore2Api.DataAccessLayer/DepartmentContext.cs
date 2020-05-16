@@ -1,7 +1,6 @@
-﻿using AspNetCoreApi.DataAccessLayer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCore2Api.DataAccessLayer
+namespace AspNetCoreApi.DataAccessLayer
 {
     public class DepartmentContext : DbContext
     {
@@ -12,5 +11,7 @@ namespace AspNetCore2Api.DataAccessLayer
         }
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
     }
 }

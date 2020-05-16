@@ -3,14 +3,16 @@ using AspNetCoreApi.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AspNetCoreApi.DataAccessLayer.Migrations
+namespace AspNetCore2Api.DataAccessLayer.Migrations
 {
     [DbContext(typeof(DepartmentContext))]
-    partial class DepartmentContextModelSnapshot : ModelSnapshot
+    [Migration("20200516073452_AddingEmployee")]
+    partial class AddingEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
