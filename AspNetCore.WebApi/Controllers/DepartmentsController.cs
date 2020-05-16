@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AspNetCore2Api.DataAccessLayer;
 using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
@@ -20,31 +19,55 @@ namespace AspNetCoreApi.WebApi.Controllers
             _db = db;
         }
 
+        //SERIALIZING DATA USING JSON SERIALIZER
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
-            var departments = await _db.Departments.Include(d => d.Employees)
-                .Select(d => new Department
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    Employees = d.Employees.Select(e => new Employee
-                    {
-                        Name = e.Name,
-                        Gender = e.Gender,
-                        Id = e.Id,
-                    })
-                })
+            var departments = await _db.Departments
+                .Include(d => d.Employees)
                 .ToListAsync();
 
-            if (departments.Any())
-            {
-                return Ok(departments);
-            }
+            if (!departments.Any()) return NotFound();
 
-            return NotFound();
+
+            var result = JsonConvert.SerializeObject(
+                value: departments,
+                formatting: Formatting.None,
+                settings: new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Ok(result);
+
         }
+
+
+        // SERIALIZING DATA USING LAMBDA EXPRESSIONS    
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
+        // {
+        //     var departments = await _db.Departments.Include(d => d.Employees)
+        //         .Select(d => new Department
+        //         {
+        //             Id = d.Id,
+        //             Name = d.Name,
+        //             Description = d.Description,
+        //             Employees = d.Employees.Select(e => new Employee
+        //             {
+        //                 Name = e.Name,
+        //                 Gender = e.Gender,
+        //                 Id = e.Id,
+        //             })
+        //         })
+        //         .ToListAsync();
+        //
+        //     if (departments.Any())
+        //     {
+        //         return Ok(departments);
+        //     }
+        //
+        //     return NotFound();
+        // }
 
         [HttpGet("[action]/{id:int}")]
         public async Task<ActionResult<Department>> GetById(int id)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreApi.DataAccessLayer;
+using Newtonsoft.Json;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
@@ -20,20 +21,42 @@ namespace AspNetCoreApi.WebApi.Controllers
             _context = context;
         }
 
+        //SERIALIZING USING LAMBDA FUNCTIONS
+        // GET: api/Employees
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        // {
+        //     return await _context.Employees.Include(e => e.Department)
+        //         .Select(x => new Employee
+        //         {
+        //             Id = x.Id,
+        //             Name = x.Name,
+        //             Department = x.Department,
+        //             DepartmentId = x.Department.Id,
+        //             Gender = x.Gender
+        //         })
+        //         .ToListAsync();
+        // }
+        
+        
+        //SERIALIZING USING JSON SERIALIZER
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.Include(e => e.Department)
-                .Select(x => new Employee
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Department = x.Department,
-                    DepartmentId = x.Department.Id,
-                    Gender = x.Gender
-                })
+            var employees = await _context.Employees
+                .Include(e => e.Department)
                 .ToListAsync();
+
+            if (!employees.Any()) return NotFound();
+            var jsonResult = JsonConvert.SerializeObject(
+                value: employees,
+                formatting: Formatting.None,
+                settings: new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Ok(jsonResult);
         }
 
         // GET: api/Employees/5
