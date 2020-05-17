@@ -1,4 +1,7 @@
+using System;
+using System.Threading.Tasks;
 using AspNetCoreApi.DataAccessLayer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +32,25 @@ namespace AspNetCoreApi.WebApi
                    configure.Filters.Add(typeof(ExceptionHandler));
                    configure.Filters.Add(new AuthorizeFilter());
                });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+            services.ConfigureApplicationCookie(opt =>
+            {
+
+                opt.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = (redirectContext) =>
+                    {
+                        redirectContext.HttpContext.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    }
+                };
+
+                opt.ExpireTimeSpan = new TimeSpan(0, 10, 0);
+
+            });
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultTokenProviders()
@@ -62,6 +84,7 @@ namespace AspNetCoreApi.WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
+
 
             app.UseRouting();
 
