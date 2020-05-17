@@ -45,6 +45,11 @@ namespace AspNetCoreApi.WebApi
                     {
                         redirectContext.HttpContext.Response.StatusCode = 401;
                         return Task.CompletedTask;
+                    },
+                    OnRedirectToAccessDenied = redirectContext =>
+                    {
+                        redirectContext.HttpContext.Response.StatusCode = 401;
+                        return Task.CompletedTask;
                     }
                 };
 
@@ -94,6 +99,7 @@ namespace AspNetCoreApi.WebApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -39,7 +39,21 @@ namespace AspNetCoreApi.WebApi.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Ok(user);
+                    var assignRoleResult = await _userManager.AddToRoleAsync(user: user, role: "user");
+
+                    if (assignRoleResult.Succeeded)
+                    {
+                        return Ok(user);
+                    }
+                    else
+                    {
+                        foreach (var error in assignRoleResult.Errors)
+                        {
+                            ModelState.AddModelError("", errorMessage:error.Description);
+                        }
+
+                        return BadRequest(ModelState.Values);
+                    }
                 }
                 else
                 {

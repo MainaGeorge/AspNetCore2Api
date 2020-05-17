@@ -10,6 +10,7 @@ namespace AspNetCoreApi.WebApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class EmployeesController : ControllerBase
     {
         private readonly DepartmentContext _context;

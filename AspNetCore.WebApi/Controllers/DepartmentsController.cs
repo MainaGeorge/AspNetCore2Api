@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ControllerBase = Microsoft.AspNetCore.Mvc.ControllerBase;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class DepartmentsController : ControllerBase
     {
         private readonly DepartmentContext _db;
@@ -20,7 +23,7 @@ namespace AspNetCoreApi.WebApi.Controllers
         }
 
         //SERIALIZING DATA USING JSON SERIALIZER
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         {
             var departments = await _db.Departments
@@ -41,8 +44,7 @@ namespace AspNetCoreApi.WebApi.Controllers
 
         }
 
-
-        // SERIALIZING DATA USING LAMBDA EXPRESSIONS    
+        #region SERIALIZING DATA USING LAMBDA EXPRESSIONS 
         // [HttpGet]
         // public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
         // {
@@ -67,9 +69,11 @@ namespace AspNetCoreApi.WebApi.Controllers
         //     }
         //
         //     return NotFound();
-        // }
+        // } 
+        #endregion
 
-        [HttpGet("[action]/{id:int}")]
+
+        [Microsoft.AspNetCore.Mvc.HttpGet("[action]/{id:int}")]
         public async Task<ActionResult<Department>> GetById(int id)
         {
             var department = await _db.Departments.FirstOrDefaultAsync(d => d.Id == id);
@@ -81,7 +85,7 @@ namespace AspNetCoreApi.WebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("[action]/{name}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("[action]/{name}")]
         public async Task<ActionResult<Department>> GetByName(string name)
         {
             var department = await _db.Departments.FirstOrDefaultAsync(d => d.Name == name);
@@ -93,7 +97,7 @@ namespace AspNetCoreApi.WebApi.Controllers
             return NotFound();
         }
 
-        [HttpDelete("{id:int}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
             var dept = await _db.Departments.FirstOrDefaultAsync(d => d.Id == id);
@@ -111,7 +115,7 @@ namespace AspNetCoreApi.WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<IActionResult> PostDepartment([FromBody] Department dept)
         {
             if (ModelState.IsValid)
@@ -129,7 +133,7 @@ namespace AspNetCoreApi.WebApi.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
         public async Task<IActionResult> PutDepartment([FromBody] Department department)
         {
             if (ModelState.IsValid)
