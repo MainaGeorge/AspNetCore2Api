@@ -58,6 +58,20 @@ namespace AspNetCoreApi.WebApi.Controllers
             }
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SignIn(SignInModel signInModel)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState.Values);
 
+            var signInResult = await _signInManager.PasswordSignInAsync(userName: signInModel.Username,
+                password: signInModel.Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (signInResult.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(ModelState);
+        }
     }
 }
