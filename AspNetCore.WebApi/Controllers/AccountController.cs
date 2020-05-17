@@ -23,7 +23,7 @@ namespace AspNetCoreApi.WebApi.Controllers
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserModel userModel)
+        public async Task<IActionResult> Register(RegistrationModel registrationModel)
         {
             try
             {
@@ -31,11 +31,11 @@ namespace AspNetCoreApi.WebApi.Controllers
 
                 var user = new IdentityUser
                 {
-                    UserName = userModel.Name,
-                    Email = userModel.Email
+                    UserName = registrationModel.Name,
+                    Email = registrationModel.Email
                 };
 
-                var result = await _userManager.CreateAsync(user, userModel.Password);
+                var result = await _userManager.CreateAsync(user, registrationModel.Password);
 
                 if (result.Succeeded)
                 {
@@ -57,5 +57,7 @@ namespace AspNetCoreApi.WebApi.Controllers
                 return BadRequest(ModelState.Values);
             }
         }
+
+
     }
 }

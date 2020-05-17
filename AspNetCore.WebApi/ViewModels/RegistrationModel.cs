@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AspNetCoreApi.WebApi.ViewModels
 {
-    public class UserModel
+    public class RegistrationModel
     {
         [Required(ErrorMessage = "Please provide your name")]
         [Column(TypeName = "varchar(255)")]
