@@ -2,6 +2,7 @@ using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +27,7 @@ namespace AspNetCoreApi.WebApi
             services.AddControllers(configure: configure =>
                {
                    configure.Filters.Add(typeof(ExceptionHandler));
+                   configure.Filters.Add(new AuthorizeFilter());
                });
 
             services.AddIdentity<IdentityUser, IdentityRole>()
