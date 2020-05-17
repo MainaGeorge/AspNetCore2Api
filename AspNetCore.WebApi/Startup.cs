@@ -23,7 +23,10 @@ namespace AspNetCoreApi.WebApi
         {
             services.AddDbContext<DepartmentContext>();
 
-            services.AddControllers()
+            services.AddControllers(configure: configure =>
+               {
+                   configure.Filters.Add(typeof(ExceptionHandler));
+               })
                 ;
 
             // Register the Swagger generator, defining 1 or more Swagger documents
