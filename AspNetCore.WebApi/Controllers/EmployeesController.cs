@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreApi.DataAccessLayer;
@@ -21,6 +19,7 @@ namespace AspNetCoreApi.WebApi.Controllers
             _context = context;
         }
 
+        #region serializing with lambda
         //SERIALIZING USING LAMBDA FUNCTIONS
         // GET: api/Employees
         // [HttpGet]
@@ -37,8 +36,9 @@ namespace AspNetCoreApi.WebApi.Controllers
         //         })
         //         .ToListAsync();
         // }
-        
-        
+
+        #endregion
+
         //SERIALIZING USING JSON SERIALIZER
         // GET: api/Employees
         [HttpGet]
