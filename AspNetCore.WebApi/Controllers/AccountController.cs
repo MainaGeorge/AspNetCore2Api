@@ -73,5 +73,12 @@ namespace AspNetCoreApi.WebApi.Controllers
 
             return BadRequest(ModelState);
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
     }
 }
