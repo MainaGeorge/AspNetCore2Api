@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreApi.DataAccessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ namespace AspNetCoreApi.WebApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartmentsController : ControllerBase
     {
         private readonly DepartmentContext _db;

@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreApi.DataAccessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 
 namespace AspNetCoreApi.WebApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeesController : ControllerBase
     {
         private readonly DepartmentContext _context;

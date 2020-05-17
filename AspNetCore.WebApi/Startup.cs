@@ -1,7 +1,7 @@
-using AspNetCore2Api.DataAccessLayer;
 using AspNetCoreApi.DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,8 +26,11 @@ namespace AspNetCoreApi.WebApi
             services.AddControllers(configure: configure =>
                {
                    configure.Filters.Add(typeof(ExceptionHandler));
-               })
-                ;
+               });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<DepartmentContext>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

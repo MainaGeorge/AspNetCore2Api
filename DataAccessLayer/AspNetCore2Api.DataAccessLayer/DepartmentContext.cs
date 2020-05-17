@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreApi.DataAccessLayer
 {
-    public class DepartmentContext : DbContext
+    public class DepartmentContext : IdentityDbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -11,6 +12,7 @@ namespace AspNetCoreApi.DataAccessLayer
         }
 
         public DbSet<Department> Departments { get; set; }
+
         public DbSet<Employee> Employees { get; set; }
 
     }
