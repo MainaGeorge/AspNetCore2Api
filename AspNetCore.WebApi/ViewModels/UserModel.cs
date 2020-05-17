@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AspNetCoreApi.WebApi.Models
+namespace AspNetCoreApi.WebApi.ViewModels
 {
     public class UserModel
     {
@@ -15,12 +15,12 @@ namespace AspNetCoreApi.WebApi.Models
 
 
         [Required(ErrorMessage = "a password is required with every account")]
-        [DataType(dataType:DataType.Password)]
+        [DataType(dataType: DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "a password is required with every account")]
-        [DataType(dataType:DataType.Password)]
+        [DataType(dataType: DataType.Password)]
         [Compare("Password")]
-        public string ConfirmPassword { get; set; }     
+        public string ConfirmPassword { get; set; }
     }
 }

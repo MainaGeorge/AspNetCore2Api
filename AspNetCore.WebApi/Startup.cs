@@ -56,6 +56,12 @@ namespace AspNetCoreApi.WebApi
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<DepartmentContext>();
 
+            services.Configure<IdentityOptions>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+            });
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
